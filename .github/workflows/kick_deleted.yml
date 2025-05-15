@@ -1,0 +1,29 @@
+name: Kick Deleted Telegram Accounts
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every 24 hours at 00:00 UTC
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: pip install telethon
+
+      - name: Run the script
+        env:
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          GROUP_USERNAME: ${{ secrets.GROUP_USERNAME }}
+        run: python kick_deleted.py
